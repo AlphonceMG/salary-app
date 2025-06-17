@@ -8,6 +8,10 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # This line is crucial for pushing to gh-pages
+      pages: write # Needed for GitHub Pages deployment
+      id-token: write # Needed for actions/deploy-pages
     
     steps:
       - name: Checkout repository
