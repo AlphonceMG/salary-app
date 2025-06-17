@@ -1,0 +1,34 @@
+name: Deploy Frontend to GitHub Pages
+
+on: 
+  push:
+    branches:
+      - master # Or 'main' if that's your default branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18' # Or your preferred Node.js version
+
+      - name: Install dependencies
+        run: npm install --prefix frontend
+
+      - name: Build Next.js application
+        run: npm run build --prefix frontend
+        env:
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/out
+          cname: AlphonceMG.github.io/salary-app # Replace 'yourusername' and 'salary-app' if necessary, or remove if using a custom domain 
